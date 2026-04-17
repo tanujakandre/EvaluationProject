@@ -16,13 +16,11 @@ namespace Web.DataAccess.Repositories
         public ITaskRepository Task { get; }
 
         public UnitOfWork(
-            ApplicationDbContext db,
-            ICategoryRepository categoryRepository,
-            ITaskRepository taskRepository)
+            ApplicationDbContext db   )     
         {
             _db = db;
-            Category = categoryRepository;
-            Task = taskRepository;
+            Category = new CategoryRepository(db);
+            Task = new TaskRepository(db);
         }
 
         public void Save()

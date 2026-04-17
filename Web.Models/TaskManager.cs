@@ -17,14 +17,15 @@ namespace Web.Models
         public DateTime DueDate { get; set; }
         public DateTime StartDate { get; set; }
 
-        [ForeignKey("UserId")]
+        //[ForeignKey("UserId")]
 
-        public int UserId { get; set; }
-        public virtual IdentityUser User { get; set; }
+        //public int UserId { get; set; }
+        //public virtual IdentityUser User { get; set; }
 
-        [ForeignKey("CategoryId")]
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        //[ForeignKey("CategoryId")]
+        //public int CategoryId { get; set; }
+        //public Category Category { get; set; }
 
     }
 }
+
