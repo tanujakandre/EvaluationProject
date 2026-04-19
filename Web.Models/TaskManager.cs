@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿
 using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;

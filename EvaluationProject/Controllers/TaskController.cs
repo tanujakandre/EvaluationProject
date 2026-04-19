@@ -1,14 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Web.DataAccess.Repositories;
 using Web.DataAccess.Repositories.IRepository;
 using Web.Models;
 
 namespace EvaluationProject.Controllers
 {
+    [Authorize]
     public class TaskController : Controller
     {
         private readonly IUnitOfWork _unit;
-        public TaskController(UnitOfWork unit)
+        public TaskController(IUnitOfWork unit)
         {
             _unit = unit;
 
@@ -16,7 +18,7 @@ namespace EvaluationProject.Controllers
         public IActionResult Index()
         {
             var tasks = _unit.Task.GetAll();
-            return View();
+            return View(tasks);
         }
 
         public IActionResult Create()

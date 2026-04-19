@@ -15,8 +15,7 @@ namespace Web.DataAccess.Repositories
         public ICategoryRepository Category { get; }
         public ITaskRepository Task { get; }
 
-        public UnitOfWork(
-            ApplicationDbContext db   )     
+        public UnitOfWork( ApplicationDbContext db   )     
         {
             _db = db;
             Category = new CategoryRepository(db);

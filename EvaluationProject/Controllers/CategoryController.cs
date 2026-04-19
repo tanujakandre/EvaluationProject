@@ -6,18 +6,18 @@ using Web.Models;
 
 namespace EvaluationProject.Controllers
 {
-    
+    [Authorize]
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unit;
-        public CategoryController(UnitOfWork unit)
+        public CategoryController(IUnitOfWork unit)
         {
             _unit = unit;
         }
         public IActionResult Index()
         {
             var categories = _unit.Category.GetAll();
-            return View();
+            return View(categories);
         }
 
         public IActionResult Create()
@@ -40,7 +40,7 @@ namespace EvaluationProject.Controllers
         public IActionResult Update(int id)
         {
             var category = _unit.Category.GetById(id);
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -80,17 +80,16 @@ namespace EvaluationProject.Controllers
             {
                 return NotFound();
             }
-            if (ModelState.IsValid)
-            {
-                _unit.Category.Remove(obj);
-                _unit.Save();
-                return RedirectToAction("Index");
-            }
-            return View();
+
+            _unit.Category.Remove(obj);
+            _unit.Save();
+            return RedirectToAction("Index");
+
+
         }
 
     }
 }
 
-        
+
 

@@ -25,16 +25,13 @@ namespace Web.DataAccess.Repositories
         {
             return _dbSet.Find(id);
         }
-        public Repository(ApplicationDbContext db, DbSet<T> dbSet)
+        public Repository(ApplicationDbContext db)
         {
             _db = db;
             _dbSet = db.Set<T>();
         }
 
-        public Repository(ApplicationDbContext db)
-        {
-            _db = db;
-        }
+       
 
         public void Add(T entity)
         {
