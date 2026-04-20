@@ -23,28 +23,28 @@ namespace Web.DataAccess.Data
        
 
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Category>().HasData(
-                new Category()
-                {
-                    Id = 1,
-                    Name="Assignment"
-                }
-                );
+        //    modelBuilder.Entity<Category>().HasData(
+        //        new Category()
+        //        {
+        //            Id = 1,
+        //            Name="Assignment"
+        //        }
+        //        );
 
-            modelBuilder.Entity<TaskManager>().HasData(
-                new TaskManager()
-                {
-                    Id = 1,
-                    Title = "Assignment",
-                    Description = "Developing a Application",
-                    DueDate = new DateTime(2026,04,20),
-                    StartDate = new DateTime(2026,04,17)
-                }
-                );
-        }
+        //    modelBuilder.Entity<TaskManager>().HasData(
+        //        new TaskManager()
+        //        {
+        //            Id = 1,
+        //            Title = "Assignment",
+        //            Description = "Developing a Application",
+        //            DueDate = new DateTime(2026,04,20),
+        //            StartDate = new DateTime(2026,04,17)
+        //        }
+        //        );
+        //}
     }
 }

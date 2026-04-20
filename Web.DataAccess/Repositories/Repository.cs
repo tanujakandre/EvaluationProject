@@ -10,15 +10,40 @@ namespace Web.DataAccess.Repositories
         private readonly ApplicationDbContext _db;
         private readonly DbSet<T> _dbSet;
 
-        //IEnumerable<T> IRepository<T>.GetAll => throw new NotImplementedException();
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>filter, string? includeProperties)
         {
-            return _dbSet.ToList();
+            IQueryable<T> query = _dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach(var prop in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query.Include(prop);
+                }
+                query = query.Include(includeProperties);
+            }
+            return query.ToList();
         }
-        public T Get(Expression<Func<T, bool>> filter)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
-            return _dbSet.FirstOrDefault<T>(filter);
+            IQueryable<T> query = _dbSet;
+            if(filter != null)
+            {
+                query = query.Where(filter);
+            }
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach(var prop in includeProperties.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(prop);
+                }
+            }
+            return query.FirstOrDefault();
         }
 
         public T GetById(int id)
@@ -30,8 +55,6 @@ namespace Web.DataAccess.Repositories
             _db = db;
             _dbSet = db.Set<T>();
         }
-
-       
 
         public void Add(T entity)
         {

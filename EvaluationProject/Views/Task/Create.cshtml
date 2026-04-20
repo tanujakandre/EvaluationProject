@@ -1,5 +1,5 @@
-﻿@using Web.Models
-@model TaskManager
+﻿@using Web.Models.ViewModels
+@model TaskVM
 
 <h2>Add New Task</h2>
 
@@ -7,28 +7,37 @@
 
 
     <div class="form-group">
-        <label asp-for="Title"></label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
+        <label asp-for="tasks.Title"></label>
+        <input asp-for="tasks.Title" class="form-control" />
+        <span asp-validation-for="tasks.Title" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Description"></label>
-        <input asp-for="Description" class="form-control" />
-        <span asp-validation-for="Description" class="text-danger"></span>
+        <label asp-for="tasks.Description"></label>
+        <input asp-for="tasks.Description" class="form-control" />
+        <span asp-validation-for="tasks.Description" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="StartDate"></label>
-        <input asp-for="StartDate" class="form-control" />
-        <span asp-validation-for="StartDate" class="text-danger"></span>
+        <label asp-for="tasks.StartDate"></label>
+        <input asp-for="tasks.StartDate" class="form-control" />
+        <span asp-validation-for="tasks.StartDate" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="DueDate"></label>
-        <input asp-for="DueDate" class="form-control" />
-        <span asp-validation-for="DueDate" class="text-danger"></span>
+        <label asp-for="tasks.DueDate"></label>
+        <input asp-for="tasks.DueDate" class="form-control" />
+        <span asp-validation-for="tasks.DueDate" class="text-danger"></span>
     </div>
+
+    <label>Category</label>
+    <select asp-for="tasks.CategoryId" class="form-control">
+        <option value="0">-- Select Category --</option>
+        @foreach (var item in Model.CategoryList)
+        {
+            <option value="@item.Id">@item.Name</option>
+        }
+    </select>
 
     <br />
 

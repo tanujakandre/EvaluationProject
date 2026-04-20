@@ -1,41 +1,52 @@
-﻿@model TaskManager
-@using Web.Models
+﻿@model TaskVM
+@using Web.Models.ViewModels
 
 <h2>Edit Tasks</h2>
 
 <form asp-action="Update" method="post">
 
-    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="tasks.Id" />
 
 
     <div class="form-group">
-        <label asp-for="Title"></label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
+        <label asp-for="tasks.Title"></label>
+        <input asp-for="tasks.Title" class="form-control" />
+        <span asp-validation-for="tasks.Title" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="Description"></label>
-        <input asp-for="Description" class="form-control" />
-        <span asp-validation-for="Description" class="text-danger"></span>
+        <label asp-for="tasks.Description"></label>
+        <input asp-for="tasks.Description" class="form-control" />
+        <span asp-validation-for="tasks.Description" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="StartDate"></label>
-        <input asp-for="StartDate" class="form-control" />
-        <span asp-validation-for="StartDate" class="text-danger"></span>
+        <label asp-for="tasks.StartDate"></label>
+        <input asp-for="tasks.StartDate" class="form-control" />
+        <span asp-validation-for="tasks.StartDate" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label asp-for="DueDate"></label>
-        <input asp-for="DueDate" class="form-control" />
-        <span asp-validation-for="DueDate" class="text-danger"></span>
+        <label asp-for="tasks.DueDate"></label>
+        <input asp-for="tasks.DueDate" class="form-control" />
+        <span asp-validation-for="tasks.DueDate" class="text-danger"></span>
     </div>
 
-    <br />
+    <div class="form-group">
+        <label>Category</label>
+        <select asp-for="tasks.CategoryId" class="form-control" />
+            @* <option value="">--No Category--</option> *@
+                @foreach (var item in Model.CategoryList)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+        </select>
+</div>
 
-    <button type="submit" class="btn btn-primary">Update</button>
-    <a asp-action="Index" class="btn btn-secondary">Back</a>
+<br />
+
+<button type="submit" class="btn btn-primary">Update</button>
+<a asp-action="Index" class="btn btn-secondary">Back</a>
 
 </form>
 

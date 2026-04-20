@@ -1,4 +1,4 @@
-﻿@using Web.Models
+﻿ @using Web.Models
 
 @model IEnumerable<TaskManager>
 
@@ -14,6 +14,7 @@
             <th>Description</th>
             <th>Start Date</th>
             <th>Due Date</th>
+            <th>Category</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -26,6 +27,7 @@
                 <td>@task.Description</td>
                 <td>@task.StartDate</td>
                 <td>@task.DueDate</td>
+                <td>@task.Category?.Name</td>
 
                 <td>
                     <a asp-action="Update" asp-route-id="@task.Id" class="btn btn-primary">Edit</a> |

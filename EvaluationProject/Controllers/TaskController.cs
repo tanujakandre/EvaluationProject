@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Web.DataAccess.Repositories;
 using Web.DataAccess.Repositories.IRepository;
 using Web.Models;
+using Web.Models.ViewModels;
 
 namespace EvaluationProject.Controllers
 {
@@ -17,24 +18,31 @@ namespace EvaluationProject.Controllers
         }
         public IActionResult Index()
         {
-            var tasks = _unit.Task.GetAll();
+            var tasks = _unit.Task.GetAll(includeProperties: "Category");
             return View(tasks);
         }
 
         public IActionResult Create()
         {
-            return View();
+            TaskVM vm = new TaskVM()
+            {
+                tasks = new TaskManager(),
+                CategoryList = _unit.Category.GetAll()
+            };
+
+            return View(vm);
         }
 
         [HttpPost]
-        public IActionResult Create(TaskManager obj)
+        public IActionResult Create(TaskVM obj)
         {
             if (ModelState.IsValid)
             {
-                _unit.Task.Add(obj);
+                _unit.Task.Add(obj.tasks);
                 _unit.Save();
                 return RedirectToAction("Index");
             }
+
             return View();
         }
 
@@ -45,11 +53,16 @@ namespace EvaluationProject.Controllers
             {
                 return NotFound();
             }
-            return View(task);
+            TaskVM vm = new TaskVM()
+            {
+                tasks = task,
+                CategoryList = _unit.Category.GetAll()
+            };
+            return View(vm);
         }
 
         [HttpPost]
-        public IActionResult Update(TaskManager obj)
+        public IActionResult Update(TaskVM obj)
         {
             if (obj == null)
             {
@@ -57,37 +70,40 @@ namespace EvaluationProject.Controllers
             }
             if (ModelState.IsValid)
             {
-                _unit.Task.Update(obj);
+                _unit.Task.Update(obj.tasks);
                 _unit.Save();
                 return RedirectToAction("Index");
             }
-            return View();
+            return View(obj);
         }
 
         public IActionResult Delete(int id)
         {
-            var task = _unit.Task.GetById(id);
+            var task = _unit.Task.Get(u=> u.Id==id,"Category");
             if (id == null)
             {
                 return NotFound();
             }
-            return View(task);
+            TaskVM vm = new TaskVM()
+            {
+                tasks = task,
+                CategoryList = _unit.Category.GetAll()
+            };
+            return View(vm);
         }
 
         [HttpPost]
-        public IActionResult Delete(TaskManager obj)
+        public IActionResult Delete(TaskVM obj)
         {
             if (obj == null)
             {
                 return NotFound();
             }
-            if (ModelState.IsValid)
-            {
-                _unit.Task.Remove(obj);
-                _unit.Save();
-                return RedirectToAction("Index");
-            }
-            return View();
+
+            _unit.Task.Remove(obj.tasks);
+            _unit.Save();
+            return RedirectToAction("Index");
+
         }
 
     }
