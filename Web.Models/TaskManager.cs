@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Identity.Client;
 using System;
@@ -19,11 +18,11 @@ namespace Web.Models
         public DateTime DueDate { get; set; }
         public DateTime StartDate { get; set; }
 
+        public string? UserId { get; set; }
+        [ForeignKey("UserId")]
+        [ValidateNever]
+        public IdentityUser User { get; set; }
 
-        //public int UserId { get; set; }
-        //[ForeignKey("UserId")]
-        //public IdentityUser User { get; set; }
-        
         public int? CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         [ValidateNever]

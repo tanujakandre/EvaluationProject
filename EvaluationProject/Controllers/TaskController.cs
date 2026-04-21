@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Web.DataAccess.Repositories;
 using Web.DataAccess.Repositories.IRepository;
@@ -11,14 +12,18 @@ namespace EvaluationProject.Controllers
     public class TaskController : Controller
     {
         private readonly IUnitOfWork _unit;
-        public TaskController(IUnitOfWork unit)
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public TaskController(IUnitOfWork unit, UserManager<IdentityUser> userManager)
         {
             _unit = unit;
+            _userManager = userManager;
 
         }
         public IActionResult Index()
         {
-            var tasks = _unit.Task.GetAll(includeProperties: "Category");
+            var userId = _userManager.GetUserId(User);
+            var tasks = _unit.Task.GetAll(u=> u.UserId== userId, includeProperties: "Category");
             return View(tasks);
         }
 
@@ -36,14 +41,16 @@ namespace EvaluationProject.Controllers
         [HttpPost]
         public IActionResult Create(TaskVM obj)
         {
+            var user = _userManager.GetUserId(User);
+            obj.tasks.UserId = user;
             if (ModelState.IsValid)
             {
                 _unit.Task.Add(obj.tasks);
                 _unit.Save();
                 return RedirectToAction("Index");
             }
-
-            return View();
+            obj.CategoryList = _unit.Category.GetAll();
+            return View(obj);
         }
 
         public IActionResult Update(int id)
@@ -74,12 +81,13 @@ namespace EvaluationProject.Controllers
                 _unit.Save();
                 return RedirectToAction("Index");
             }
+            obj.CategoryList = _unit.Category.GetAll();
             return View(obj);
         }
 
         public IActionResult Delete(int id)
         {
-            var task = _unit.Task.Get(u=> u.Id==id,"Category");
+            var task = _unit.Task.Get(u => u.Id == id, "Category");
             if (id == null)
             {
                 return NotFound();
